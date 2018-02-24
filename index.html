@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>My Calculator</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
@@ -48,13 +48,17 @@
     </div>
 </body>
 <script>
+    var operand = [];
+    var operator = '';
     var answer = 0;
     var display = 0;
     var isDec = false;
     var squ = 0;
     var temp = 0;
+    var userClick = false;
 
     $.fn.display = function (params) {
+        userClick = true;
         if (temp < 15) {
             temp += 1;
             if (isDec) {
@@ -70,21 +74,37 @@
         }
     }
 
-    $.fn.calc = function (params) {
-        switch (params) {
+    $.fn.calc = function () {
+        var operand_1 = operand.pop();
+        var operand_2 = operand.pop();
+        var result = 0;
+        switch (operator) {
             case '+':
-                parseFloat(answer) += parseFloat(display);
+                operand.push(parseFloat(operand_1) + parseFloat(operand_2));
+                $("input").val(parseFloat(operand_1) + parseFloat(operand_2));
                 break;
             case '-':
-                parseFloat(answer) -= parseFloat(display);
+                operand.push(parseFloat(operand_2) - parseFloat(operand_1));
+                $("input").val(parseFloat(operand_2) - parseFloat(operand_1));
                 break;
             case '*':
-                parseFloat(answer) *= parseFloat(display);
+                operand.push(parseFloat(operand_1) * parseFloat(operand_2));
+                $("input").val(parseFloat(operand_1) * parseFloat(operand_2));
                 break;
             case '/':
-                parseFloat(answer) /= parseFloat(display);
+                operand.push(parseFloat(operand_2) / parseFloat(operand_1));
+                $("input").val(parseFloat(operand_2) / parseFloat(operand_1));
                 break;
         }
+        operator = '';
+    }
+    $.fn.clean = function () {
+        display = 0;
+        answer = 0;
+        squ = 0;
+        isDec = false;
+        temp = 0;
+        userClick = false;
     }
 
     $("#clear").click(function () {
@@ -93,6 +113,8 @@
         squ = 0;
         isDec = false;
         temp = 0;
+        operand = [];
+        operator = '';
         $("input").val(display);
     })
 
@@ -137,23 +159,63 @@
     })
 
     $("#answer").click(function () {
-        $("input").val(answer);
+        if (operator != '') {
+            operand.push(display);
+            $("#answer").calc();
+        }
+
+        console.log(operand)
+        $("#answer").clean();
     })
 
     $("#add").click(function () {
-        $("#add").calc('+');
+
+        operand.push(display);
+        if (operand.length > 1) {
+            $("#add").calc();
+        }
+        operator = '+';
+
+        $("#add").clean();
     })
 
     $("#less").click(function () {
-        $("#less").calc('-');
+        operand.push(display);
+        if (operand.length > 1) {
+            $("#less").calc();
+        }
+        operator = '-';
+
+        $("#less").clean();
     })
 
     $("#mul").click(function () {
-        $("#mul").calc('*');
+
+        if (!userClick) {
+            operand.push(1);
+        } else {
+            operand.push(display);
+        }
+        if (operand.length > 1) {
+            $("#mul").calc();
+        }
+        operator = '*';
+
+        $("#mul").clean();
     })
 
     $("#exc").click(function () {
-        $("#exc").calc('/');
+        if (!userClick) {
+            operand.push(1);
+        } else {
+            operand.push(display);
+        }
+        if (operand.length > 1) {
+            $("#exc").calc();
+        }
+        operator = '/';
+
+        $("#exc").clean();
     })
 
     $("#point").click(function () {

@@ -68,12 +68,24 @@ button{
     background-color: gray;
     color:black;
 }
+.btn-calc:hover{
+    background-color: #595959;
+    color:black;
+}
 .btn-clear{
     background-color: yellow;
     color:black;
 }
+.btn-clear:hover{
+    background-color: #b7b784;
+    color:black;
+}
 .btn-answer{
     background-color: orangered;
+    color:black;
+}
+.btn-answer:hover{
+    background-color: #c66c27;
     color:black;
 }
 input{
@@ -81,7 +93,7 @@ input{
     display: block;
     width: 680px;
     height: 60px;
-    font-size: 22px;
+    font-size: 32px;
     line-height: 1.5;
     color: #495057;
     background-color: #fff;
