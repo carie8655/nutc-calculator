@@ -77,10 +77,11 @@ button{
     color:black;
 }
 input{
+    text-align: right;
     display: block;
-    width: 700px;
+    width: 680px;
     height: 60px;
-    font-size: 1rem;
+    font-size: 22px;
     line-height: 1.5;
     color: #495057;
     background-color: #fff;

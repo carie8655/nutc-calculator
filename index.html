@@ -7,27 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-    <script>
-        var answer = 0;
-        var num = 0;
-        function cal(params) {
-            switch (params) {
-                case '+':
-                    answer += num;
-                    break;
-                case '-':
-                    answer -= num;
-                    break;
-                case '*':
-                    answer *= num;
-                    break;
-                case '/':
-                    answer /= num;
-                    break;
-            }
-        };
-    </script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
 </head>
 
 <body>
@@ -36,34 +18,154 @@
             <p class="title">MY CALCULATOR</p>
         </div>
         <div id="answer_window">
-            <input type="number" readonly>
+            <input align="right" type="text" readonly>
         </div>
         <br>
         <hr>
         <br>
         <div id="btn_group">
-            <button class="btn large_button btn-clear">AC</button>
-            <button class="btn  btn-number">
+            <button id="clear" class="btn large_button btn-clear">AC</button>
+            <button id="backspace" class="btn  btn-number">
                 <i class="far fa-arrow-alt-circle-left"></i>
             </button>
-            <button class="btn btn-calc">+</button>
-            <button class="btn btn-number">7</button>
-            <button class="btn btn-number">8</button>
-            <button class="btn btn-number">9</button>
-            <button class="btn btn-calc">-</button>
-            <button class="btn btn-number">4</button>
-            <button class="btn btn-number">5</button>
-            <button class="btn btn-number">6</button>
-            <button class="btn btn-calc">*</button>
-            <button class="btn btn-number">1</button>
-            <button class="btn btn-number">2</button>
-            <button class="btn btn-number">3</button>
-            <button class="btn btn-calc">/</button>
-            <button class="btn large_button btn-number">0</button>
-            <button class="btn  btn-number">.</button>
-            <button class="btn btn-answer">=</button>
+            <button id="add" class="btn btn-calc">+</button>
+            <button id="seven" class="btn btn-number">7</button>
+            <button id="eight" class="btn btn-number">8</button>
+            <button id="nine" class="btn btn-number">9</button>
+            <button id="less" class="btn btn-calc">-</button>
+            <button id="four" class="btn btn-number">4</button>
+            <button id="five" class="btn btn-number">5</button>
+            <button id="six" class="btn btn-number">6</button>
+            <button id="mul" class="btn btn-calc">*</button>
+            <button id="one" class="btn btn-number">1</button>
+            <button id="two" class="btn btn-number">2</button>
+            <button id="three" class="btn btn-number">3</button>
+            <button id="exc" class="btn btn-calc">/</button>
+            <button id="zero" class="btn large_button btn-number">0</button>
+            <button id="point" class="btn  btn-number">.</button>
+            <button id="answer" class="btn btn-answer">=</button>
         </div>
     </div>
 </body>
+<script>
+    var answer = 0;
+    var display = 0;
+    var isDec = false;
+    var squ = 0;
+    var temp = 0;
+
+    $.fn.display = function (params) {
+        if (temp < 15) {
+            temp += 1;
+            if (isDec) {
+                squ += 1;
+                display = parseFloat(params / (Math.pow(10, squ)) + parseFloat(display)).toFixed(squ);
+                params === 0 ? $("input").val($("input").val() + '0') : $("input").val(display);
+            } else {
+                display = display * 10 + params;
+                $("input").val(display);
+            }
+        } else {
+            $("input").val("最多輸入十五位數");
+        }
+    }
+
+    $.fn.calc = function (params) {
+        switch (params) {
+            case '+':
+                parseFloat(answer) += parseFloat(display);
+                break;
+            case '-':
+                parseFloat(answer) -= parseFloat(display);
+                break;
+            case '*':
+                parseFloat(answer) *= parseFloat(display);
+                break;
+            case '/':
+                parseFloat(answer) /= parseFloat(display);
+                break;
+        }
+    }
+
+    $("#clear").click(function () {
+        display = 0;
+        answer = 0;
+        squ = 0;
+        isDec = false;
+        temp = 0;
+        $("input").val(display);
+    })
+
+    $("#zero").click(function () {
+        $("#zero").display(0);
+    })
+
+    $("#one").click(function () {
+        $("#one").display(1);
+    })
+
+    $("#two").click(function () {
+        $("#two").display(2);
+    })
+
+    $("#three").click(function () {
+        $("#three").display(3);
+    })
+
+    $("#four").click(function () {
+        $("#four").display(4);
+    })
+
+    $("#five").click(function () {
+        $("#five").display(5);
+    })
+
+    $("#six").click(function () {
+        $("#six").display(6);
+    })
+
+    $("#seven").click(function () {
+        $("#seven").display(7);
+    })
+
+    $("#eight").click(function () {
+        $("#eight").display(8);
+    })
+
+    $("#nine").click(function () {
+        $("#nine").display(9);
+    })
+
+    $("#answer").click(function () {
+        $("input").val(answer);
+    })
+
+    $("#add").click(function () {
+        $("#add").calc('+');
+    })
+
+    $("#less").click(function () {
+        $("#less").calc('-');
+    })
+
+    $("#mul").click(function () {
+        $("#mul").calc('*');
+    })
+
+    $("#exc").click(function () {
+        $("#exc").calc('/');
+    })
+
+    $("#point").click(function () {
+        if (!isDec) {
+            isDec = true;
+            $("input").val(display + '.');
+        }
+    })
+
+    $(document).ready(function () {
+        $("input").val(answer);
+    });
+</script>
 
 </html>
