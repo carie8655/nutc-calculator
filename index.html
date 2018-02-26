@@ -155,11 +155,17 @@
                 $("#answer_window > input").val(display);
                 break;
             case '←':
-                display = display.toString().substr(0, display.toString().length - 1);
-                if (display.toString().length <= 0) {
-                    display = 0;
+                var value = $("#answer_window > input").val();
+                value = value.toString().substr(0, value.toString().length - 1);
+                if (value.toString().length <= 0) {
+                    value = 0;
                 }
-                $("#answer_window > input").val(display);
+                if (value.toString().indexOf('.') > -1) {
+                    isDec = true;
+                    squ = value.toString().substr(value.toString().indexOf('.') + 1, value.toString().length).toString().length;
+                }
+                $("#answer_window > input").val(value);
+                display = parseFloat(value);
                 break;
             case '.':
                 if (!isDec) {
