@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="http://www.pvhc.net/img27/vjkxubzudulzvgetaseh.png">
     <title>My Calculator</title>
-    <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
 </head>
@@ -24,26 +25,24 @@
         <hr>
         <br>
         <div id="btn_group">
-            <button id="clear" class="btn large_button btn-clear">AC</button>
-            <button id="backspace" class="btn  btn-number">
-                <i class="far fa-arrow-alt-circle-left"></i>
-            </button>
-            <button id="add" class="btn btn-calc">+</button>
-            <button id="seven" class="btn btn-number">7</button>
-            <button id="eight" class="btn btn-number">8</button>
-            <button id="nine" class="btn btn-number">9</button>
-            <button id="less" class="btn btn-calc">-</button>
-            <button id="four" class="btn btn-number">4</button>
-            <button id="five" class="btn btn-number">5</button>
-            <button id="six" class="btn btn-number">6</button>
-            <button id="mul" class="btn btn-calc">*</button>
-            <button id="one" class="btn btn-number">1</button>
-            <button id="two" class="btn btn-number">2</button>
-            <button id="three" class="btn btn-number">3</button>
-            <button id="exc" class="btn btn-calc">/</button>
-            <button id="zero" class="btn large_button btn-number">0</button>
-            <button id="point" class="btn  btn-number">.</button>
-            <button id="answer" class="btn btn-answer">=</button>
+            <button value="AC" class="btn large_button btn-clear">AC</button>
+            <button value="←" class="btn btn-number">←</button>
+            <button value="+" class="btn btn-calc">+</button>
+            <button value="7" class="btn btn-number">7</button>
+            <button value="8" class="btn btn-number">8</button>
+            <button value="9" class="btn btn-number">9</button>
+            <button value="-" class="btn btn-calc">-</button>
+            <button value="4" class="btn btn-number">4</button>
+            <button value="5" class="btn btn-number">5</button>
+            <button value="6" class="btn btn-number">6</button>
+            <button value="*" class="btn btn-calc">*</button>
+            <button value="1" class="btn btn-number">1</button>
+            <button value="2" class="btn btn-number">2</button>
+            <button value="3" class="btn btn-number">3</button>
+            <button value="/" class="btn btn-calc">/</button>
+            <button value="0" class="btn large_button btn-number">0</button>
+            <button value="." class="btn  btn-number">.</button>
+            <button value="=" class="btn btn-answer">=</button>
         </div>
     </div>
 </body>
@@ -54,19 +53,26 @@
     var display = 0;
     var isDec = false;
     var squ = 0;
-    var temp = 0;
     var userClick = false;
 
-    $.fn.display = function (params) {
+    $("button").click(function () {
+        $("button").switchValue($(this).val());
+    })
+
+    $(document).ready(function () {
+        console.log((0.1 * 10000 + 0.7 * 10000) / 10000);
+        $("input").val(answer);
+    });
+
+    $.fn.displayNumber = function (params) {
         userClick = true;
-        if (temp < 15) {
-            temp += 1;
+        if (display.toString().length < 15) {
             if (isDec) {
                 squ += 1;
-                display = parseFloat(params / (Math.pow(10, squ)) + parseFloat(display)).toFixed(squ);
+                display = parseFloat(parseFloat(params / (Math.pow(10, squ)) + parseFloat(display)).toFixed(squ));
                 params === 0 ? $("input").val($("input").val() + '0') : $("input").val(display);
             } else {
-                display = display * 10 + params;
+                display = parseFloat(display) * 10 + params;
                 $("input").val(display);
             }
         } else {
@@ -77,157 +83,96 @@
     $.fn.calc = function () {
         var operand_1 = operand.pop();
         var operand_2 = operand.pop();
-        var result = 0;
+        var result = 0
+
+
         switch (operator) {
             case '+':
-                operand.push(parseFloat(operand_1) + parseFloat(operand_2));
-                $("input").val(parseFloat(operand_1) + parseFloat(operand_2));
+                result = parseFloat(operand_1) * 10000 + parseFloat(operand_2) * 10000;
                 break;
             case '-':
-                operand.push(parseFloat(operand_2) - parseFloat(operand_1));
-                $("input").val(parseFloat(operand_2) - parseFloat(operand_1));
+                result = parseFloat(operand_2) * 10000 - parseFloat(operand_1) * 10000;
                 break;
             case '*':
-                operand.push(parseFloat(operand_1) * parseFloat(operand_2));
-                $("input").val(parseFloat(operand_1) * parseFloat(operand_2));
+                result = parseFloat(operand_1) * 10000 * parseFloat(operand_2);
                 break;
             case '/':
-                operand.push(parseFloat(operand_2) / parseFloat(operand_1));
-                $("input").val(parseFloat(operand_2) / parseFloat(operand_1));
+                result = parseFloat(operand_2) * 10000 / parseFloat(operand_1);
                 break;
         }
+        operand.push(result / 10000);
+        $("input").val(result / 10000);
         operator = '';
     }
+
+    $.fn.operatorCalcu = function (params) {
+        !userClick ? params === '*' || params === '/' ? operand.push(1) : operand.push(0) : operand.push(display);
+
+        if (operand.length > 1) {
+            console.log(123)
+            $(this).calc();
+        }
+        operator = params;
+        $(this).clean();
+    }
+
+    $.fn.switchValue = function (params) {
+
+        switch (params) {
+            case '+': case '-': case '*': case '/':
+                $(this).operatorCalcu(params);
+                break;
+            case 'AC':
+                display = 0;
+                answer = 0;
+                squ = 0;
+                isDec = false;
+                operand = [];
+                operator = '';
+                $("input").val(display);
+                break;
+            case '←':
+                display = display.toString().substr(0, display.toString().length - 1);
+                if (display.toString().length <= 0) {
+                    display = 0;
+                }
+                $("input").val(display);
+                break;
+            case '.':
+                if (!isDec) {
+                    isDec = true;
+                    $("input").val(display + '.');
+                }
+                break;
+            case '=':
+                if (operator != '') {
+                    operand.push(display);
+                    $("#answer").calc();
+                    answer = $("input").val();
+                }
+
+                $("input").val(answer);
+
+                display = parseFloat($("input").val());
+                squ = 0;
+                isDec = false;
+                userClick = true;
+                operator = '';
+                operand = [];
+                break;
+            default:
+                $(this).displayNumber(parseInt(params));
+                break;
+        }
+    }
+
     $.fn.clean = function () {
         display = 0;
         answer = 0;
         squ = 0;
         isDec = false;
-        temp = 0;
         userClick = false;
     }
-
-    $("#clear").click(function () {
-        display = 0;
-        answer = 0;
-        squ = 0;
-        isDec = false;
-        temp = 0;
-        operand = [];
-        operator = '';
-        $("input").val(display);
-    })
-
-    $("#zero").click(function () {
-        $("#zero").display(0);
-    })
-
-    $("#one").click(function () {
-        $("#one").display(1);
-    })
-
-    $("#two").click(function () {
-        $("#two").display(2);
-    })
-
-    $("#three").click(function () {
-        $("#three").display(3);
-    })
-
-    $("#four").click(function () {
-        $("#four").display(4);
-    })
-
-    $("#five").click(function () {
-        $("#five").display(5);
-    })
-
-    $("#six").click(function () {
-        $("#six").display(6);
-    })
-
-    $("#seven").click(function () {
-        $("#seven").display(7);
-    })
-
-    $("#eight").click(function () {
-        $("#eight").display(8);
-    })
-
-    $("#nine").click(function () {
-        $("#nine").display(9);
-    })
-
-    $("#answer").click(function () {
-        if (operator != '') {
-            operand.push(display);
-            $("#answer").calc();
-        }
-
-        console.log(operand)
-        $("#answer").clean();
-    })
-
-    $("#add").click(function () {
-
-        operand.push(display);
-        if (operand.length > 1) {
-            $("#add").calc();
-        }
-        operator = '+';
-
-        $("#add").clean();
-    })
-
-    $("#less").click(function () {
-        operand.push(display);
-        if (operand.length > 1) {
-            $("#less").calc();
-        }
-        operator = '-';
-
-        $("#less").clean();
-    })
-
-    $("#mul").click(function () {
-
-        if (!userClick) {
-            operand.push(1);
-        } else {
-            operand.push(display);
-        }
-        if (operand.length > 1) {
-            $("#mul").calc();
-        }
-        operator = '*';
-
-        $("#mul").clean();
-    })
-
-    $("#exc").click(function () {
-        if (!userClick) {
-            operand.push(1);
-        } else {
-            operand.push(display);
-        }
-        if (operand.length > 1) {
-            $("#exc").calc();
-        }
-        operator = '/';
-
-        $("#exc").clean();
-    })
-
-    $("#point").click(function () {
-        if (!isDec) {
-            isDec = true;
-            $("input").val(display + '.');
-        }
-    })
-
-    $(document).ready(function () {
-        $("input").val(answer);
-    });
 </script>
 
 </html>
