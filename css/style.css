@@ -3,14 +3,24 @@
     font-family: Microsoft JhengHei;
 }
 body{
-    background-color: #d4d7dd;
+    background-color:#61A2DA;
+}
+#color_setting{
+    width: 800px;
+    margin-top: 100px;
+    text-align: center;
+    border-width:2px;
+    border-style:dashed;
+    border-color:gray;
+    padding:5px;
+    color: white;
 }
 #wrapper{
     width: 800px;
     height: 600px;
     border-radius: 75px;
     box-shadow:3px 3px 4px 4px gray;
-    background-color: aquamarine;
+    background-color: #F6A7B8;
 }
 #calc_header{
     height: 100px;
@@ -73,7 +83,7 @@ button{
     color:black;
 }
 .btn-clear{
-    background-color: yellow;
+    background-color: #F1EC7A;
     color:black;
 }
 .btn-clear:hover{
@@ -81,14 +91,14 @@ button{
     color:black;
 }
 .btn-answer{
-    background-color: orangered;
+    background-color: #F08838;
     color:black;
 }
 .btn-answer:hover{
     background-color: #c66c27;
     color:black;
 }
-input{
+#answer_window > input{
     text-align: right;
     display: block;
     width: 680px;

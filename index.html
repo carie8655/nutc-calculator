@@ -44,6 +44,12 @@
             <button value="." class="btn  btn-number">.</button>
             <button value="=" class="btn btn-answer">=</button>
         </div>
+        <div id="color_setting">
+            <form action="">
+                <input type="radio" name="color_selection" value="gray">GRAY
+                <input type="radio" name="color_selection" value="blue" checked>BLUE
+            </form>
+        </div>
     </div>
 </body>
 <script>
@@ -59,8 +65,22 @@
     })
 
     $(document).ready(function () {
-        $("input").val(display);
+        $("#answer_window > input").val(display);
     });
+
+    $('input[name="color_selection"]').click(function () {
+        var value = $('input[name="color_selection"]:checked').val();
+        switch (value) {
+            case 'gray':
+                $('body').css({ "background-color": "#B5B5B3" });
+                $('#wrapper').css({ "background-color": "#99B6BD" });
+                break;
+            case 'blue':
+                $('body').css({ "background-color": "#61A2DA" });
+                $('#wrapper').css({ "background-color": "#F6A7B8" });
+                break;
+        }
+    })
 
     /**
      * 顯示
@@ -71,13 +91,13 @@
             if (isDec) {
                 squ += 1;
                 display = parseFloat(parseFloat(params / (Math.pow(10, squ)) + parseFloat(display)).toFixed(squ));
-                params === 0 ? $("input").val($("input").val() + '0') : $("input").val(display);
+                params === 0 ? $("#answer_window > input").val($("#answer_window > input").val() + '0') : $("#answer_window > input").val(display);
             } else {
                 display = parseFloat(display) * 10 + params;
-                $("input").val(display);
+                $("#answer_window > input").val(display);
             }
         } else {
-            $("input").val("最多輸入十五位數");
+            $("#answer_window > input").val("最多輸入十五位數");
         }
     }
 
@@ -104,7 +124,7 @@
                 break;
         }
         operand.push(result / 10000);
-        $("input").val(result / 10000);
+        $("#answer_window > input").val(result / 10000);
         operator = '';
     }
 
@@ -132,19 +152,19 @@
                 isDec = false;
                 operand = [];
                 operator = '';
-                $("input").val(display);
+                $("#answer_window > input").val(display);
                 break;
             case '←':
                 display = display.toString().substr(0, display.toString().length - 1);
                 if (display.toString().length <= 0) {
                     display = 0;
                 }
-                $("input").val(display);
+                $("#answer_window > input").val(display);
                 break;
             case '.':
                 if (!isDec) {
                     isDec = true;
-                    $("input").val(display + '.');
+                    $("#answer_window > input").val(display + '.');
                 }
                 break;
             case '=':
@@ -153,7 +173,7 @@
                     $(this).calc();
                 }
 
-                display = parseFloat($("input").val());
+                display = parseFloat($("#answer_window > input").val());
                 squ = 0;
                 isDec = false;
                 userClick = true;
