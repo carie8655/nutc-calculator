@@ -49,7 +49,6 @@
 <script>
     var operand = [];
     var operator = '';
-    var answer = 0;
     var display = 0;
     var isDec = false;
     var squ = 0;
@@ -60,10 +59,12 @@
     })
 
     $(document).ready(function () {
-        console.log((0.1 * 10000 + 0.7 * 10000) / 10000);
-        $("input").val(answer);
+        $("input").val(display);
     });
 
+    /**
+     * 顯示
+     */
     $.fn.displayNumber = function (params) {
         userClick = true;
         if (display.toString().length < 15) {
@@ -80,15 +81,17 @@
         }
     }
 
+    /**
+     * 計算
+     */
     $.fn.calc = function () {
         var operand_1 = operand.pop();
         var operand_2 = operand.pop();
         var result = 0
 
-
         switch (operator) {
             case '+':
-                result = parseFloat(operand_1) * 10000 + parseFloat(operand_2) * 10000;
+                result = parseFloat(operand_1) * 10000 + parseFloat(operand_2) * 10000; // 防止JS的BUG
                 break;
             case '-':
                 result = parseFloat(operand_2) * 10000 - parseFloat(operand_1) * 10000;
@@ -105,13 +108,14 @@
         operator = '';
     }
 
+
     $.fn.operatorCalcu = function (params) {
         !userClick ? params === '*' || params === '/' ? operand.push(1) : operand.push(0) : operand.push(display);
 
         if (operand.length > 1) {
-            console.log(123)
             $(this).calc();
         }
+
         operator = params;
         $(this).clean();
     }
@@ -124,7 +128,6 @@
                 break;
             case 'AC':
                 display = 0;
-                answer = 0;
                 squ = 0;
                 isDec = false;
                 operand = [];
@@ -147,11 +150,8 @@
             case '=':
                 if (operator != '') {
                     operand.push(display);
-                    $("#answer").calc();
-                    answer = $("input").val();
+                    $(this).calc();
                 }
-
-                $("input").val(answer);
 
                 display = parseFloat($("input").val());
                 squ = 0;
@@ -168,7 +168,6 @@
 
     $.fn.clean = function () {
         display = 0;
-        answer = 0;
         squ = 0;
         isDec = false;
         userClick = false;
