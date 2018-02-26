@@ -163,6 +163,9 @@
                 if (value.toString().indexOf('.') > -1) {
                     isDec = true;
                     squ = value.toString().substr(value.toString().indexOf('.') + 1, value.toString().length).toString().length;
+                } else {
+                    isDec = false;
+                    squ = 0;
                 }
                 $("#answer_window > input").val(value);
                 display = parseFloat(value);
